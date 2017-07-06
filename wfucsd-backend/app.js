@@ -40,6 +40,7 @@ app.use('/api/winners', winners);
 app.use('/api/marketplacedb', marketplacedb);
 app.use('/api/eventdata', eventdata);
 
+ 
 
 
 
@@ -61,20 +62,9 @@ schedule.scheduleJob(eventStartTime, function() {
 //2. calulate winner list,order by calulating lotteries diff
 schedule.scheduleJob(eventEndTime, function() {
     console.log('Event passed: ' + eventEndTime);
-    //1. lotteries add diff save to lotteries db,
-    db.luckyNumberdb.find(function(err, luckyNumberdb) {
-        var lucky = luckyNumberdb[0].luckyNumber
-        db.lotteries.find(function(err, lotteries) {
-            for (var i = 0; i < lotteries.length; i++) {
-                var diff = Math.abs(lotteries[i].lotteryKey - lucky)
-                db.lotteries.update({ _id: lotteries[i]._id }, { $set: { "diff": diff } })
-            }
-        })
-    })
-    //2. calulate winner list,order by calulating lotteries diff
     db.lotteries.find().sort({diff:1},function(err, lotteries){
     	 db.winners.save(lotteries, function (err, winner) {
-    		console.log(lotteries)
+    	//	console.log(lotteries)
 	})
     })
 });

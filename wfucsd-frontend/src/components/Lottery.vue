@@ -116,6 +116,7 @@
         prize5:'',
         timeLeft: '',
         luckyNumber: 0,
+        winners:[],
         distance: 0,
         addLotteryNumber:0,
         showTimeLeft: true

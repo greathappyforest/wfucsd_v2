@@ -33,13 +33,24 @@ router.post('/', function (req, res, next) {
         res.json({
             "error": "Bad Data"
         });
-    } else
+    } else{
+        db.luckyNumberdb.find(function(err, luckyNumberdb) {
+            var lucky = luckyNumberdb[0].luckyNumber
+            db.lotteries.find(function(err, lotteries) {
+                for (var i = 0; i < lotteries.length; i++) {
+                    var diff = Math.abs(lotteries[i].lotteryKey - lucky)
+                    db.lotteries.update({ _id: lotteries[i]._id }, { $set: { "diff": diff } })
+                }
+            })
+        })
         db.lotteries.save(lottery, function (err, lottery) {
             if (err) {
                 res.send(err);
             }
             res.json(lottery);
         });
+    }
+
 });
 
 // Delete lottery
