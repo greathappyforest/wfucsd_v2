@@ -44,12 +44,16 @@
         </div>
       </div>
     </div>
+    <!-- show Info before event-->
+    <div class="panel panel-info " v-if="eventState==0">
+      <div class="panel-heading ">The new lottery event will be start on <span style="color:red"> {{eventStartTime}} </span> to <span style="color:red"> {{eventEndTime}} </span>. Please come back later.</div>
+    </div>
     <!-- Timeleft-->
-    <div class="panel panel-info " v-if="showTimeLeft">
+    <div class="panel panel-info " v-if="eventState==1">
       <div class="panel-heading ">Time left: <span style="color:red"> {{timeLeft}} </span></div>
     </div>
     <!-- Lucky Number-->
-    <div class="panel panel-info" v-else>
+    <div class="panel panel-info" v-if="eventState==2">
       <div class="panel-heading ">Lottery lucky number: <span style="color:red"> 
                       <tr v-for="(number,index) in luckyNumber" v-if="index<1">
                             <td>{{number.luckyNumber}}</td>
@@ -119,16 +123,24 @@
         winners:[],
         distance: 0,
         addLotteryNumber:0,
-        showTimeLeft: true
+        showTimeLeft: true,
+        eventState:0,
+        eventStartTime:"",
+        eventEndTime:""
       }
     },
     methods: {
       addLottery: function() {
         var self=this
-        if (!this.showTimeLeft) {
-          alert('Lottery event has already passed. Please come back early next time.')
+        if (this.eventState===2) {
+         toastr.warning('Lottery event has already passed. Please come back early next time!')
           return
         }
+        if (this.eventState===0) {
+         toastr.warning('Event has not start yet, please come back later!')
+          return
+        }
+        if (this.eventState===1) {
         var submitLottery = confirm('Please confirm your warframe Id. If the warframe Id is not correct, this lottery will not count!')
         if (submitLottery === true && this.newlotteryObj.wfid) {
           this.newlotteryObj.lotteryKey = Math.floor((Math.random() * 1000) + 1)
@@ -142,48 +154,8 @@
               console.log(error);
             });
         }
+      }
       },
-
- 
-      // getWinner: function() {
-      //   var lucky = 0
-      //   luckyNumberRef.on('value', function(a) {
-      //     var luckyNumberObjs = a.val()
-      //     for (var key in luckyNumberObjs) {
-      //       if (luckyNumberObjs.hasOwnProperty(key)) {
-      //         lucky = luckyNumberObjs[key].luckyNumber
-      //       }
-      //     }
-      //   })
-      //   var diff = 0
-      //   lotteryRef.on('value', function(a) {
-      //     var lotteryObjs = a.val()
-      //     for (var key in lotteryObjs) {
-      //       if (lotteryObjs.hasOwnProperty(key)) {
-      //         diff = Math.abs(lotteryObjs[key].lotteryKey - lucky)
-      //         lotteryRef.child(key).update({
-      //           'diff': diff
-      //         })
-      //       }
-      //     }
-      //     //  get winner size
-      //     var winnersSize = 0
-      //     winnersRef.once('value', function(snapshot) {
-      //       winnersSize = snapshot.numChildren()
-      //     })
-      //     lotteryRef.orderByChild('diff').once('value', function(winnerList) {
-      //       winnerList.forEach(function(data) {
-      //         if (winnersSize < 5) {
-      //           winnersRef.push({
-      //             'wfid': data.val().wfid,
-      //             'lotteryKey': data.val().lotteryKey,
-      //             'diff': data.val().diff
-      //           })
-      //         }
-      //       })
-      //     })
-      //   })
-      // },
       getlotteries: function (){
         axios.get(`http://localhost:3000/api/lotteries`)
           .then(response => {
@@ -224,30 +196,28 @@
             this.prize3 = response.data.prize3
             this.prize4 = response.data.prize4
             this.prize5 = response.data.prize5
+            this.eventStartTime=response.data.eventStartTime
+            this.eventEndTime=response.data.eventEndTime
           })
           .catch(e => {
             console.log(this.errors)
           })
       },
-      
-      // getLuckyNumber: function() {
-      //   var num = Math.floor((Math.random() * 1000) + 1)
-      //   // console.log(num)
-      //   var luckyNumberdbSize = 0
-      //   luckyNumberRef.once('value', function(snapshot) {
-      //     luckyNumberdbSize = snapshot.numChildren()
-      //   })
-      //   if (luckyNumberdbSize === 0) {
-      //     luckyNumberRef.push({
-      //       'luckyNumber': num
-      //     })
-      //   }
-      // },
       getTime: function() {
         axios.get(`http://localhost:3000/api/eventdata/countdown`)
           .then(response => {
             // JSON responses are automatically parsed.
             this.distance = response.data.countdown
+          })
+          .catch(e => {
+            console.log(this.errors)
+          })
+      },
+      getEventState:function(){
+        axios.get(`http://localhost:3000/api/eventdata/state`)
+          .then(response => {
+            // JSON responses are automatically parsed.
+            this.eventState = response.data.state
           })
           .catch(e => {
             console.log(this.errors)
@@ -269,6 +239,7 @@
     },
     created: function() {
       var vm = this
+      this.getEventState()
       this.getPrize()
       this.getTime()
       this.getlotteries()

@@ -67,7 +67,18 @@ schedule.scheduleJob(eventEndTime, function() {
     	//	console.log(lotteries)
 	})
     })
+    //eventdata.resetday days after eventEndTime, reset
+
+    var resetTime =1000*60*60*24*eventdata.resetday;
+    //var resetTime =1000*60;
+    setTimeout(function(){ 
+    console.log("resetTime:" +resetTime)
+    db.lotteries.remove({})
+    db.winners.remove({})
+    }, resetTime);
+    
 });
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
