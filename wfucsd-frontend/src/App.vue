@@ -15,7 +15,7 @@
 
 
 <script>
-import Header from './components/Header'
+import Header from './components/ch/Header'
 
 export default {
 

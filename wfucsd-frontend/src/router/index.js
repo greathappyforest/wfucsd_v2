@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '../components/Home.vue'
-import Lottery from '../components/Lottery.vue'
-import Marketplace from '../components/Marketplace.vue'
-import Members from '../components/Members.vue'
+import Home from '../components/ch/Home.vue'
+import Lottery from '../components/ch/Lottery.vue'
+import Marketplace from '../components/ch/Marketplace.vue'
+import Members from '../components/ch/Members.vue'
 
 Vue.use(Router)
 
