@@ -67,9 +67,9 @@ schedule.scheduleJob(eventEndTime, function() {
     	//	console.log(lotteries)
 	})
     })
-    //eventdata.resetday days after eventEndTime, reset
+    //eventdatajson.resetday days after eventEndTime, reset
 
-    var resetTime =1000*60*60*24*eventdata.resetday;
+    var resetTime =1000*60*60*24*(eventdatajson.resetday);
     //var resetTime =1000*60;
     setTimeout(function(){ 
     console.log("resetTime:" +resetTime)

@@ -3,15 +3,10 @@
     <div class="container">
       <div class="row col-sm-12 ">
         <div class="panel panel-info ">
-          <div class="panel-heading  ">Prizes</div>
+          <div class="panel-heading  ">Announcement</div>
           <div class="panel-body ">
-            <ol>
-              <li>prizeFirst</li>
-              <li>prizeSecond</li>
-              <li>prizeThird</li>
-              <li>prizeForth</li>
-              <li>prizeFifth</li>
-            </ol>
+           This is a marketplace for warframe trading information. 
+           <br>Please post your item,price and either wfid or contact infomation below, and enjoy the game!
           </div>
         </div>
       </div>
@@ -19,12 +14,11 @@
     <!--item input-->
     <div class="panel panel-default">
       <div class="panel-heading ">
-      Add a post
-       <span class="glyphicon glyphicon-chevron-down pull-right"></span>
+        Post your items
+      <!--  <span class="glyphicon glyphicon-chevron-down pull-right"></span> -->
       </div>
-        
       <div class="panel-body ">
-        <form id="form" class="input-group col-md-8 col-md-offset-2  " v-on:submit.prevent="addItem">
+        <form id="form" class="input-group col-md-9 col-md-offset-1  " v-on:submit.prevent="addItem">
           <div class="form-group col-sm-2">
             <input type="text" class="form-control" placeholder="itemName" v-model="newItemObj.itemName">
           </div>
@@ -37,7 +31,7 @@
           <div class="form-group col-sm-2">
             <input type="text" class="form-control" placeholder="wfid" v-model="newItemObj.wfid">
           </div>
-          <div class="form-group col-sm-2">
+          <div class="form-group col-sm-3">
             <input type="text" class="form-control" placeholder="contact" v-model="newItemObj.contact">
           </div>
           <span class="input-group-btn col-sm-2">  <input type="submit" class="btn btn-primary" value="Add"></span>
@@ -46,7 +40,7 @@
     </div>
     <!--item list-->
     <div class="panel panel-default">
-      <div class="panel-heading">Participators list</div>
+      <div class="panel-heading">Trade items list:</div>
       <table class="table table-hover">
         <thead>
           <tr>
@@ -58,7 +52,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in marketplacedb">
+          <tr v-for="item in items">
             <td>{{item.itemName}}</td>
             <td>{{item.itemPrice}}</td>
             <td>{{item.NumberOfItem}}</td>
@@ -76,16 +70,10 @@
 
 <script>
   import toastr from 'toastr'
-  import {
-    database
-  } from '../../static/firebase.config.js'
-  let marketplacedbRef = database.ref('marketplacedb')
+  import axios from 'axios'
   export default {
     name: 'MarketPlace',
-    firebase: {
-      marketplacedb: marketplacedbRef
-    },
-    data () {
+    data() {
       return {
         newItemObj: {
           wfid: '',
@@ -93,34 +81,68 @@
           NumberOfItem: '',
           itemPrice: '',
           contact: ''
-        }
+        },
+        items:''
       }
     },
     methods: {
-      addItem: function () {
+      addItem: function() {
+        var self = this
         if (this.newItemObj.itemName && this.newItemObj.itemPrice && (this.newItemObj.wfid || this.newItemObj.contact)) {
           if (!this.newItemObj.NumberOfItem) {
             this.newItemObj.NumberOfItem = '1'
           }
           var submitItem = confirm('Please confirm your post: \n' + 'itemName: ' + this.newItemObj.itemName + '\n' +
-        'itemPrice: ' + this.newItemObj.itemPrice + '\n' + 'NumberOfItem: ' + this.newItemObj.NumberOfItem + '\n' + 'wfid: ' + this.newItemObj.wfid +
-           '\n' + 'contact: ' + this.newItemObj.contact + '\n')
+            'itemPrice: ' + this.newItemObj.itemPrice + '\n' + 'NumberOfItem: ' + this.newItemObj.NumberOfItem + '\n' + 'wfid: ' + this.newItemObj.wfid +
+            '\n' + 'contact: ' + this.newItemObj.contact + '\n')
           if (submitItem === true) {
-            marketplacedbRef.push(this.newItemObj)
-            toastr.success('Item post successfully')
-            this.newItemObj.itemName = ''
-            this.newItemObj.itemPrice = ''
-            this.newItemObj.NumberOfItem = ''
-            this.newItemObj.wfid = ''
-            this.newItemObj.contact = ''
+            axios.post('http://127.0.0.1:3000/api/marketplacedb', self.newItemObj)
+              .then(function(response) {
+                toastr.success('Lottery Added successfully')
+                self.getItems()
+                self.newItemObj.wfid = ''
+                self.newItemObj.itemName = ''
+                self.newItemObj.itemPrice = ''
+                self.newItemObj.NumberOfItem = ''
+                self.newItemObj.wfid = ''
+                self.newItemObj.contact = ''
+              })
+              .catch(function(error) {
+                console.log(error);
+              });
           }
         }
+        else{
+          toastr.warning('Please input necessary information!')
+        }
       },
-      removeItem: function (Item) {
-        marketplacedbRef.child(Item['.key']).remove()
+      getItems:function(){
+        axios.get(`http://localhost:3000/api/marketplacedb`)
+          .then(response => {
+            // JSON responses are automatically parsed.
+            this.items = response.data
+          })
+          .catch(e => {
+            console.log(this.errors)
+          })
+      },
+      removeItem: function(Item) {
+        console.log(Item)
+        axios.delete(`http://localhost:3000/api/marketplacedb/`+Item._id)
+          .then(response => {
+            // JSON responses are automatically parsed.
+            this.Item = response.data
+             this.getItems()
+          })
+          .catch(e => {
+            console.log(this.errors)
+          })
         toastr.success('Item removed successfully')
       }
-    }
+    },
+  created:function(){
+    this.getItems()
+  }
   }
 </script>
 

@@ -101,18 +101,15 @@
 
 <script>
   import toastr from 'toastr'
-  import lotterydata from '../../static/lotterydata.json'
   import axios from 'axios'
   export default {
     data() {
       return {
-        lotterydata,
         newlotteryObj: {
           wfid: '',
           lotteryKey: ''
         },
         lotteries:null,
-        eventEndTime: lotterydata.eventEndTime,
         prize1:'',
         prize2:'',
         prize3:'',
@@ -122,7 +119,6 @@
         luckyNumber: 0,
         winners:[],
         distance: 0,
-        addLotteryNumber:0,
         showTimeLeft: true,
         eventState:0,
         eventStartTime:"",
@@ -147,7 +143,7 @@
           axios.post('http://127.0.0.1:3000/api/lotteries',  self.newlotteryObj)
             .then(function(response) {
               toastr.success('Lottery Added successfully')
-              self.addLotteryNumber++
+              self.getlotteries()
               self.newlotteryObj.wfid=''
             })
             .catch(function(error) {
@@ -230,12 +226,7 @@
            this.getLuckyNumber()
            this.getWinner()
          }
-       },
-      addLotteryNumber:{
-         handler: function() {
-          this.getlotteries()
-        }
-      }
+       }
     },
     created: function() {
       var vm = this

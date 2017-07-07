@@ -11,11 +11,10 @@
                 <ul class="nav navbar-nav">
                     <router-link to="/Members" active-class="active" tag="li"><a>Members</a></router-link>
                     <router-link to="/lottery" active-class="active" tag="li"><a>Lottery</a></router-link>
-                </ul>
-           
-                <ul class="nav navbar-nav navbar-right">
                     <router-link to="/Marketplace" active-class="active" tag="li"><a>Marketplace</a></router-link>
-                    <router-link to="/Chat" active-class="active" tag="li"><a>Chat</a></router-link>
+                </ul>
+                 <!-- add nav link to navbar-right-->
+                <ul class="nav navbar-nav navbar-right">
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
