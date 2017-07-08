@@ -129,20 +129,23 @@
       addLottery: function() {
         var self=this
         if (this.eventState===2) {
-         toastr.warning('Lottery event has already passed. Please come back early next time!')
+       //  toastr.warning('Lottery event has already passed. Please come back early next time!')
+         toastr.warning('本期抽奖活动已经结束，尽请关注下次活动信息！')
           return
         }
         if (this.eventState===0) {
-         toastr.warning('Event has not start yet, please come back later!')
+       //  toastr.warning('Event has not start yet, please come back later!')
+         toastr.warning('抽奖活动还没开始，请稍后回来！')
           return
         }
         if (this.eventState===1) {
-        var submitLottery = confirm('Please confirm your warframe Id. If the warframe Id is not correct, this lottery will not count!')
+       // var submitLottery = confirm('Please confirm your warframe Id. If the warframe Id is not correct, this lottery will not count!')
+        var submitLottery = confirm('重复投票，ID不正确或者非氏族成员，抽奖结果将被视为作废处理！请确认你的 warframe Id：'+ this.newlotteryObj.wfid)
         if (submitLottery === true && this.newlotteryObj.wfid) {
           this.newlotteryObj.lotteryKey = Math.floor((Math.random() * 1000) + 1)
           axios.post('http://172.104.103.251:9000/api/lotteries',  self.newlotteryObj)
             .then(function(response) {
-              toastr.success('Lottery Added successfully')
+              toastr.success('奖票添加成功,感谢您的参与!')
               self.getlotteries()
               self.newlotteryObj.wfid=''
             })

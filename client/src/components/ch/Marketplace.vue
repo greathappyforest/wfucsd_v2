@@ -92,13 +92,16 @@
           if (!this.newItemObj.NumberOfItem) {
             this.newItemObj.NumberOfItem = '1'
           }
-          var submitItem = confirm('Please confirm your post: \n' + 'itemName: ' + this.newItemObj.itemName + '\n' +
-            'itemPrice: ' + this.newItemObj.itemPrice + '\n' + 'NumberOfItem: ' + this.newItemObj.NumberOfItem + '\n' + 'wfid: ' + this.newItemObj.wfid +
-            '\n' + 'contact: ' + this.newItemObj.contact + '\n')
+          // var submitItem = confirm('Please confirm your post: \n' + 'itemName: ' + this.newItemObj.itemName + '\n' +
+          //   'itemPrice: ' + this.newItemObj.itemPrice + '\n' + 'NumberOfItem: ' + this.newItemObj.NumberOfItem + '\n' + 'wfid: ' + this.newItemObj.wfid +
+          //   '\n' + 'contact: ' + this.newItemObj.contact + '\n')
+          var submitItem = confirm('请确认您发布的信息 \n' + '物品名称: ' + this.newItemObj.itemName + '\n' +
+            '物品价格: ' + this.newItemObj.itemPrice + '\n' + '物品数量: ' + this.newItemObj.NumberOfItem + '\n' + 'wfid: ' + this.newItemObj.wfid +
+            '\n' + '联系方式: ' + this.newItemObj.contact + '\n')
           if (submitItem === true) {
             axios.post('http://172.104.103.251:9000/api/marketplacedb', self.newItemObj)
               .then(function(response) {
-                toastr.success('Lottery Added successfully')
+                toastr.success('发布成功！')
                 self.getItems()
                 self.newItemObj.wfid = ''
                 self.newItemObj.itemName = ''
@@ -113,7 +116,7 @@
           }
         }
         else{
-          toastr.warning('Please input necessary information!')
+          toastr.warning('请输入必要的物品信息！')
         }
       },
       getItems:function(){
@@ -137,7 +140,7 @@
           .catch(e => {
             console.log(this.errors)
           })
-        toastr.success('Item removed successfully')
+        toastr.success('物品信息成功删除！')
       }
     },
   created:function(){
