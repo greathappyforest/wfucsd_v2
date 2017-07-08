@@ -140,7 +140,7 @@
         var submitLottery = confirm('Please confirm your warframe Id. If the warframe Id is not correct, this lottery will not count!')
         if (submitLottery === true && this.newlotteryObj.wfid) {
           this.newlotteryObj.lotteryKey = Math.floor((Math.random() * 1000) + 1)
-          axios.post('http://127.0.0.1:3000/api/lotteries',  self.newlotteryObj)
+          axios.post('http://127.0.0.1:9000/api/lotteries',  self.newlotteryObj)
             .then(function(response) {
               toastr.success('Lottery Added successfully')
               self.getlotteries()
@@ -153,7 +153,7 @@
       }
       },
       getlotteries: function (){
-        axios.get(`http://localhost:3000/api/lotteries`)
+        axios.get(`http://localhost:9000/api/lotteries`)
           .then(response => {
             // JSON responses are automatically parsed.
             this.lotteries = response.data
@@ -163,7 +163,7 @@
           })
       },
       getWinner:function (){
-        axios.get(`http://localhost:3000/api/winners`)
+        axios.get(`http://localhost:9000/api/winners`)
           .then(response => {
             // JSON responses are automatically parsed.
             this.winners = response.data
@@ -174,7 +174,7 @@
       },
 
       getLuckyNumber: function() {
-         axios.get(`http://localhost:3000/api/luckynumberdb`)
+         axios.get(`http://localhost:9000/api/luckynumberdb`)
           .then(response => {
             // JSON responses are automatically parsed.
             this.luckyNumber = response.data
@@ -184,7 +184,7 @@
           })
       },
       getPrize: function() {
-         axios.get(`http://127.0.0.1:3000/api/eventdata`)
+         axios.get(`http://127.0.0.1:9000/api/eventdata`)
           .then(response => {
             // JSON responses are automatically parsed.
             this.prize1 = response.data.prize1
@@ -200,7 +200,7 @@
           })
       },
       getTime: function() {
-        axios.get(`http://localhost:3000/api/eventdata/countdown`)
+        axios.get(`http://localhost:9000/api/eventdata/countdown`)
           .then(response => {
             // JSON responses are automatically parsed.
             this.distance = response.data.countdown
@@ -210,7 +210,7 @@
           })
       },
       getEventState:function(){
-        axios.get(`http://localhost:3000/api/eventdata/state`)
+        axios.get(`http://localhost:9000/api/eventdata/state`)
           .then(response => {
             // JSON responses are automatically parsed.
             this.eventState = response.data.state
