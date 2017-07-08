@@ -16,10 +16,10 @@ var winners = require('./routes/winners');
 var eventdata = require('./routes/eventdata');
 var schedule = require('node-schedule');
 var eventdatajson = require(path.resolve(__filename, '../eventdata.json'));
-
+var history = require('connect-history-api-fallback');
 
 var app = express();
-
+app.use(history());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
