@@ -96,7 +96,7 @@
             'itemPrice: ' + this.newItemObj.itemPrice + '\n' + 'NumberOfItem: ' + this.newItemObj.NumberOfItem + '\n' + 'wfid: ' + this.newItemObj.wfid +
             '\n' + 'contact: ' + this.newItemObj.contact + '\n')
           if (submitItem === true) {
-            axios.post('http://127.0.0.1:9000/api/marketplacedb', self.newItemObj)
+            axios.post('http://172.104.103.251:9000/api/marketplacedb', self.newItemObj)
               .then(function(response) {
                 toastr.success('Lottery Added successfully')
                 self.getItems()
@@ -117,7 +117,7 @@
         }
       },
       getItems:function(){
-        axios.get(`http://localhost:9000/api/marketplacedb`)
+        axios.get(`http://172.104.103.251:9000/api/marketplacedb`)
           .then(response => {
             // JSON responses are automatically parsed.
             this.items = response.data
@@ -128,7 +128,7 @@
       },
       removeItem: function(Item) {
         console.log(Item)
-        axios.delete(`http://localhost:9000/api/marketplacedb/`+Item._id)
+        axios.delete(`http://172.104.103.251:9000/api/marketplacedb/`+Item._id)
           .then(response => {
             // JSON responses are automatically parsed.
             this.Item = response.data
