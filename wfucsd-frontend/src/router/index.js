@@ -10,22 +10,22 @@ Vue.use(Router)
 export default new Router({
     mode: 'history',
     routes: [{
-            path: '/',
+            path: 'http://172.104.103.251:9000/',
             name: 'wfucsd',
             component: Home
         },
         {
-            path: '/members',
+            path: 'http://172.104.103.251:9000/members',
             name: 'members',
             component: Members
         },
         {
-            path: '/lottery',
+            path: 'http://172.104.103.251:9000/lottery',
             name: 'wfucsd lottery',
             component: Lottery
         },
         {
-            path: '/Marketplace',
+            path: 'http://172.104.103.251:9000/Marketplace',
             name: 'wfucsd marketplace',
             component: Marketplace
         }
