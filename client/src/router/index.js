@@ -28,6 +28,11 @@ export default new Router({
             path: '/Marketplace',
             name: 'wfucsd marketplace',
             component: Marketplace
+        },
+        {
+            path: '*',
+            name: 'wfucsd',
+            component: Home
         }
 
     ]

@@ -1,5 +1,5 @@
 {
-  "name": "wfucsd-backend",
+  "name": "wfucsd_v2",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -15,13 +15,12 @@
     "mongojs": "^2.4.0",
     "morgan": "~1.8.1",
     "node-schedule": "^1.2.3",
-    "serve-favicon": "~2.4.2"
+    "serve-favicon": "~2.4.2",
+	"nodemon": "^1.11.0",
+	"http-proxy": "^1.16.2"
   },
   "main": "app.js",
   "author": "",
   "license": "ISC",
-  "description": "",
-  "devDependencies": {
-    "nodemon": "^1.11.0"
-  }
+  "description": ""
 }

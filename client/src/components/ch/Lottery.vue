@@ -102,6 +102,7 @@
 <script>
   import toastr from 'toastr'
   import axios from 'axios'
+  import hostconfig from '../../../../hostconfig.json'
   export default {
     data() {
       return {
@@ -143,7 +144,7 @@
         var submitLottery = confirm('重复投票，ID不正确或者非氏族成员，抽奖结果将被视为作废处理！请确认你的 warframe Id：'+ this.newlotteryObj.wfid)
         if (submitLottery === true && this.newlotteryObj.wfid) {
           this.newlotteryObj.lotteryKey = Math.floor((Math.random() * 1000) + 1)
-          axios.post('http://172.104.103.251:9000/api/lotteries',  self.newlotteryObj)
+          axios.post('http://'+hostconfig.hostip+':'+ hostconfig.hostport+'/api/lotteries',  self.newlotteryObj)
             .then(function(response) {
               toastr.success('奖票添加成功,感谢您的参与!')
               self.getlotteries()
@@ -156,7 +157,8 @@
       }
       },
       getlotteries: function (){
-        axios.get(`http://172.104.103.251:9000/api/lotteries`)
+        axios.get('http://'+hostconfig.hostip+':'+ hostconfig.hostport+'/api/lotteries')
+        
           .then(response => {
             // JSON responses are automatically parsed.
             this.lotteries = response.data
@@ -166,7 +168,7 @@
           })
       },
       getWinner:function (){
-        axios.get(`http://172.104.103.251:9000/api/winners`)
+        axios.get('http://'+hostconfig.hostip+':'+ hostconfig.hostport+'/api/winners')
           .then(response => {
             // JSON responses are automatically parsed.
             this.winners = response.data
@@ -177,7 +179,7 @@
       },
 
       getLuckyNumber: function() {
-         axios.get(`http://172.104.103.251:9000/api/luckynumberdb`)
+         axios.get('http://'+hostconfig.hostip+':'+ hostconfig.hostport+'/api/luckynumberdb')
           .then(response => {
             // JSON responses are automatically parsed.
             this.luckyNumber = response.data
@@ -187,7 +189,7 @@
           })
       },
       getPrize: function() {
-         axios.get(`http://172.104.103.251:9000/api/eventdata`)
+         axios.get('http://'+hostconfig.hostip+':'+ hostconfig.hostport+'/api/eventdata')
           .then(response => {
             // JSON responses are automatically parsed.
             this.prize1 = response.data.prize1
@@ -203,7 +205,7 @@
           })
       },
       getTime: function() {
-        axios.get(`http://172.104.103.251:9000/api/eventdata/countdown`)
+        axios.get('http://'+hostconfig.hostip+':'+ hostconfig.hostport+'/api/eventdata/countdown')
           .then(response => {
             // JSON responses are automatically parsed.
             this.distance = response.data.countdown
@@ -213,7 +215,7 @@
           })
       },
       getEventState:function(){
-        axios.get(`http://172.104.103.251:9000/api/eventdata/state`)
+        axios.get('http://'+hostconfig.hostip+':'+ hostconfig.hostport+'/api/eventdata/state')
           .then(response => {
             // JSON responses are automatically parsed.
             this.eventState = response.data.state

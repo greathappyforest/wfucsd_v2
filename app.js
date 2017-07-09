@@ -41,8 +41,6 @@ app.use('/api/winners', winners);
 app.use('/api/marketplacedb', marketplacedb);
 app.use('/api/eventdata', eventdata);
 
- 
-
 
 
 //console.log(newluckyNumber)
@@ -63,21 +61,21 @@ schedule.scheduleJob(eventStartTime, function() {
 //2. calulate winner list,order by calulating lotteries diff
 schedule.scheduleJob(eventEndTime, function() {
     console.log('Event passed: ' + eventEndTime);
-    db.lotteries.find().sort({diff:1},function(err, lotteries){
-    	 db.winners.save(lotteries, function (err, winner) {
-    	//	console.log(lotteries)
-	})
-    })
-    //eventdatajson.resetday days after eventEndTime, reset
+    db.lotteries.find().sort({ diff: 1 }, function(err, lotteries) {
+            db.winners.save(lotteries, function(err, winner) {
+                //	console.log(lotteries)
+            })
+        })
+        //eventdatajson.resetday days after eventEndTime, reset
 
-    var resetTime =1000*60*60*24*(eventdatajson.resetday);
+    var resetTime = 1000 * 60 * 60 * 24 * (eventdatajson.resetday);
     //var resetTime =1000*60;
-    setTimeout(function(){ 
-    console.log("resetTime:" +resetTime)
-    db.lotteries.remove({})
-    db.winners.remove({})
+    setTimeout(function() {
+        console.log("resetTime:" + resetTime)
+        db.lotteries.remove({})
+        db.winners.remove({})
     }, resetTime);
-    
+
 });
 
 

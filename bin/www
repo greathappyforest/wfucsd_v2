@@ -7,12 +7,12 @@
 var app = require('../app');
 var debug = require('debug')('wfucsd-backend:server');
 var http = require('http');
-
+var hostconfig=require('../hostconfig.json')
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '9000');
+var port = normalizePort(process.env.PORT || hostconfig.hostport);
 app.set('port', port);
 
 /**

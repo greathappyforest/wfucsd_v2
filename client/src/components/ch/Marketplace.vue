@@ -71,6 +71,7 @@
 <script>
   import toastr from 'toastr'
   import axios from 'axios'
+  import hostconfig from '../../../../hostconfig.json'
   export default {
     name: 'MarketPlace',
     data() {
@@ -99,7 +100,7 @@
             '物品价格: ' + this.newItemObj.itemPrice + '\n' + '物品数量: ' + this.newItemObj.NumberOfItem + '\n' + 'wfid: ' + this.newItemObj.wfid +
             '\n' + '联系方式: ' + this.newItemObj.contact + '\n')
           if (submitItem === true) {
-            axios.post('http://172.104.103.251:9000/api/marketplacedb', self.newItemObj)
+            axios.post('http://'+hostconfig.hostip+':'+ hostconfig.hostport+'/api/marketplacedb', self.newItemObj)
               .then(function(response) {
                 toastr.success('发布成功！')
                 self.getItems()
@@ -120,7 +121,7 @@
         }
       },
       getItems:function(){
-        axios.get(`http://172.104.103.251:9000/api/marketplacedb`)
+        axios.get('http://'+hostconfig.hostip+':'+ hostconfig.hostport+'/api/marketplacedb')
           .then(response => {
             // JSON responses are automatically parsed.
             this.items = response.data
@@ -131,7 +132,7 @@
       },
       removeItem: function(Item) {
         console.log(Item)
-        axios.delete(`http://172.104.103.251:9000/api/marketplacedb/`+Item._id)
+        axios.delete('http://'+hostconfig.hostip+':'+ hostconfig.hostport+'/api/marketplacedb/'+Item._id)
           .then(response => {
             // JSON responses are automatically parsed.
             this.Item = response.data
